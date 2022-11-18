@@ -1,85 +1,69 @@
-//from https://github.com/SuboptimalEng/three-js-tutorials/blob/main/02-setup-guide/src/App.jsx
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import Stats from 'three/examples/jsm/libs/stats.module';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import Stats from "three/examples/jsm/libs/stats.module";
 
 export default class SceneInit {
-  constructor(canvasId) {
-    // NOTE: Core components to initialize Three.js app.
-    this.scene = undefined;
-    this.camera = undefined;
-    this.renderer = undefined;
-
-    // NOTE: Camera params;
-    this.fov = 45;
-    this.nearPlane = 1;
-    this.farPlane = 1000;
-    this.canvasId = canvasId;
-
-    // NOTE: Additional components.
-    this.clock = undefined;
-    this.stats = undefined;
-    this.controls = undefined;
-
-    // NOTE: Lighting is basically required.
-    this.ambientLight = undefined;
-    this.directionalLight = undefined;
+  constructor(fov = 36, camera, scene, stats, controls, renderer) {
+    this.fov = fov;
+    this.scene = scene;
+    this.stats = stats;
+    this.camera = camera;
+    this.controls = controls;
+    this.renderer = renderer;
   }
 
-  initialize() {
-    this.scene = new THREE.Scene();
+  initScene() {
     this.camera = new THREE.PerspectiveCamera(
       this.fov,
       window.innerWidth / window.innerHeight,
       1,
       1000
     );
-    this.camera.position.z = 48;
+    this.camera.position.z = 128;
 
-    // NOTE: Specify a canvas which is already created in the HTML.
-    const canvas = document.getElementById(this.canvasId);
+    this.scene = new THREE.Scene();
+
+    const spaceTexture = new THREE.TextureLoader().load("/textures/space2.jpg");
+    this.scene.background = spaceTexture;
+
+    // specify a canvas which is already created in the HTML file and tagged by an id
+    // aliasing enabled
     this.renderer = new THREE.WebGLRenderer({
-      canvas,
-      // NOTE: Anti-aliasing smooths out the edges.
+      canvas: document.getElementById("myThreeJsCanvas"),
       antialias: true,
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    // this.renderer.shadowMap.enabled = true;
     document.body.appendChild(this.renderer.domElement);
 
-    this.clock = new THREE.Clock();
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
     this.stats = Stats();
     document.body.appendChild(this.stats.dom);
 
-    // ambient light which is for the whole scene
-    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    this.ambientLight.castShadow = true;
-    this.scene.add(this.ambientLight);
+    //ambient light which is for the whole scene
+    let ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    ambientLight.castShadow = true;
+    this.scene.add(ambientLight);
 
-    // directional light - parallel sun rays
-    this.directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    // this.directionalLight.castShadow = true;
-    this.directionalLight.position.set(0, 32, 64);
-    this.scene.add(this.directionalLight);
+    //spot light which is illuminating the chart directly
+    let spotLight = new THREE.SpotLight(0xffffff, 0.55);
+    spotLight.castShadow = true;
+    spotLight.position.set(0, 0, 10);
+    this.scene.add(spotLight);
 
     // if window resizes
-    window.addEventListener('resize', () => this.onWindowResize(), false);
-
+    window.addEventListener("resize", () => this.onWindowResize(), false);
   }
 
   animate() {
-    // NOTE: Window is implied.
     // requestAnimationFrame(this.animate.bind(this));
     window.requestAnimationFrame(this.animate.bind(this));
     this.render();
     this.stats.update();
-    this.controls.update();
+    // this.controls.update();
   }
 
   render() {
-    // NOTE: Update uniform data on each render.
-    // this.uniforms.u_time.value += this.clock.getDelta();
     this.renderer.render(this.scene, this.camera);
   }
 
