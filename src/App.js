@@ -6,7 +6,6 @@ import Rotation from "./library/Rotation";
 
 export default function Home() {
   useEffect(async () => {
-    // TODO: Understand this code later.
     let test = new SceneInit();
     test.initScene();
     test.animate();
@@ -19,22 +18,22 @@ export default function Home() {
     solarSystem.add(sunMesh);
     test.scene.add(solarSystem);
 
-    const mercury = new Planet(2, 16, "/textures/sun.jpg");
+    const mercury = new Planet(2, 16, "/textures/mercury.jpg");
     const mercuryMesh = mercury.getMesh();
     let mercurySystem = new THREE.Group();
     mercurySystem.add(mercuryMesh);
 
-    const venus = new Planet(3, 32, "/textures/sun.jpg");
+    const venus = new Planet(3, 32, "/textures/venus.jpg");
     const venusMesh = venus.getMesh();
     let venusSystem = new THREE.Group();
     venusSystem.add(venusMesh);
 
-    const earth = new Planet(4, 48, "/textures/sun.jpg");
+    const earth = new Planet(4, 48, "/textures/earth.jpg");
     const earthMesh = earth.getMesh();
     let earthSystem = new THREE.Group();
     earthSystem.add(earthMesh);
 
-    const mars = new Planet(3, 64, "/textures/sun.jpg");
+    const mars = new Planet(3, 64, "/textures/mars.jpg");
     const marsMesh = mars.getMesh();
     let marsSystem = new THREE.Group();
     marsSystem.add(marsMesh);
@@ -54,14 +53,14 @@ export default function Home() {
     const marsRotationMesh = marsRotation.getMesh();
     marsSystem.add(marsRotationMesh);
 
-    // NOTE: Animate solar system at 60fps.
-    const EARTH_YEAR = 2 * Math.PI * (1 / 144) * (1 / 144);
+    //make solar system static
+    sunMesh.rotation.y += 0.001;
+    mercurySystem.rotation.y = 3 ; 
+    venusSystem.rotation.y = 9;
+    earthSystem.rotation.y += 8;
+    marsSystem.rotation.y += 5;
     const animate = () => {
-      sunMesh.rotation.y += 0.001;
-      mercurySystem.rotation.y += EARTH_YEAR * 4;
-      venusSystem.rotation.y += EARTH_YEAR * 2;
-      earthSystem.rotation.y += EARTH_YEAR;
-      marsSystem.rotation.y += EARTH_YEAR * 0.5;
+      //place animations here
       requestAnimationFrame(animate);
     };
     animate();
