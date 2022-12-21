@@ -23,8 +23,8 @@ export default class SceneInit {
 
     this.scene = new THREE.Scene();
 
-    const spaceTexture = new THREE.TextureLoader().load("/textures/space2.jpg");
-    this.scene.background = spaceTexture;
+    // const spaceTexture = new THREE.TextureLoader().load("/textures/space2.jpg");
+    // this.scene.background = spaceTexture;
 
     // specify a canvas which is already created in the HTML file and tagged by an id
     // aliasing enabled
@@ -40,17 +40,40 @@ export default class SceneInit {
     this.stats = Stats();
     document.body.appendChild(this.stats.dom);
 
-    //ambient light which is for the whole scene
-    let ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-    ambientLight.castShadow = true;
+    const color = 0xFFFFFF;
+    const intensity = 0.08;
+
+    const ambientLight = new THREE.AmbientLight(color, intensity);
     this.scene.add(ambientLight);
 
-    //spot light which is illuminating the chart directly
-    let spotLight = new THREE.SpotLight(0xffffff, 0.55);
-    spotLight.castShadow = true;
-    spotLight.position.set(0, 0, 10);
-    this.scene.add(spotLight);
 
+
+
+
+
+    var vertices = [];
+
+
+    var numPoints = 10000;
+    for (var i = 0; i < numPoints; i++) {
+        var x = THREE.MathUtils.randFloatSpread(1000);
+        var y = THREE.MathUtils.randFloatSpread(1000);
+        var z = THREE.MathUtils.randFloatSpread(1000);
+
+        vertices.push(x, y, z);
+    }
+    
+    var geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+    var material = new THREE.PointsMaterial({
+        color: 0xb4b4b4,
+        sizeAttenuation: false,
+        size: 2,
+    });
+
+    var points = new THREE.Points(geometry, material);
+    this.scene.add(points);
     // if window resizes
     window.addEventListener("resize", () => this.onWindowResize(), false);
   }

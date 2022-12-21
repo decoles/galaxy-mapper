@@ -9,13 +9,7 @@ export default function Home() {
     let test = new SceneInit();
     test.initScene();
     test.animate();
-
-    const sunGeometry = new THREE.SphereGeometry(8);
-    const sunTexture = new THREE.TextureLoader().load("/textures/sun.jpg");
-    const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
-    const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
     const solarSystem = new THREE.Group();
-    solarSystem.add(sunMesh);
     test.scene.add(solarSystem);
 
     const mercury = new Planet(2, 16, "/textures/mercury.jpg");
@@ -54,7 +48,7 @@ export default function Home() {
     marsSystem.add(marsRotationMesh);
 
     //make solar system static
-    sunMesh.rotation.y += 0.001;
+
     mercurySystem.rotation.y = 3 ; 
     venusSystem.rotation.y = 9;
     earthSystem.rotation.y += 8;
