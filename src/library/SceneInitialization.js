@@ -46,34 +46,25 @@ export default class SceneInit {
     const ambientLight = new THREE.AmbientLight(color, intensity);
     this.scene.add(ambientLight);
 
-
-
-
-
-
-    var vertices = [];
-
-
+    //Initlize the stars
+    var vertices = []; 
     var numPoints = 10000;
     for (var i = 0; i < numPoints; i++) {
         var x = THREE.MathUtils.randFloatSpread(1000);
         var y = THREE.MathUtils.randFloatSpread(1000);
         var z = THREE.MathUtils.randFloatSpread(1000);
-
         vertices.push(x, y, z);
-    }
-    
+    } 
     var geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-
     var material = new THREE.PointsMaterial({
         color: 0xb4b4b4,
         sizeAttenuation: false,
-        size: 2,
+        size: 1,
     });
-
     var points = new THREE.Points(geometry, material);
     this.scene.add(points);
+
     // if window resizes
     window.addEventListener("resize", () => this.onWindowResize(), false);
   }
