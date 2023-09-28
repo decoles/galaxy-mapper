@@ -39,6 +39,7 @@ export default class SceneInit {
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
+    //Keep in debug only (stats for fps)
     this.stats = Stats();
     document.body.appendChild(this.stats.dom);
 
@@ -85,7 +86,13 @@ export default class SceneInit {
   
     const x = centerX + Math.cos(time) * radius;
     const y = centerY + Math.sin(time) * radius;
-  
+    
+    // // Create a sphere to visualize the position of the light
+    const sun = new THREE.SphereGeometry( 4, 32, 16 ); 
+    // geometry.translate( x, y, 0 );
+    // const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } ); 
+    // const sphere = new THREE.Mesh( sun, material ); this.scene.add( sphere );
+
     // Get the existing directional light from the scene
     const directionalLight = this.scene.getObjectByName('directionalLight');
   
@@ -101,6 +108,7 @@ export default class SceneInit {
       newDirectionalLight.position.set(x, y, 0);
       newDirectionalLight.name = 'directionalLight'; // Set a name to identify it
       this.scene.add(newDirectionalLight);
+
     }
   }
 

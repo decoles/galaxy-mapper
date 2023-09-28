@@ -48,18 +48,38 @@ export default function GenerateGalaxy() {
     const marsRotationMesh = marsRotation.getMesh();
     marsSystem.add(marsRotationMesh);
 
+    var material1 = new THREE.MeshBasicMaterial( { color: 0xaaaaaa } );
+    var geometry = new THREE.SphereGeometry( 4, 32, 32 );
+    var sphere = new THREE.Mesh( geometry, material1 );
+    galaxy.scene.add( sphere );
     
+    var geometry = new THREE.TorusGeometry( 5, 0.05, 4, 100 );
+    var material2 = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+    var torus = new THREE.Mesh( geometry, material2 );
+    torus.rotation.x = Math.PI/2;
+    galaxy.scene.add( torus );
+
     //make solar system static
     mercurySystem.rotation.y = 3 ; 
     venusSystem.rotation.y = 9;
     earthSystem.rotation.y += 8;
     marsSystem.rotation.y += 5;
+
+
+
+    //make any constant animations occur (like sun rotation)
     const animate = () => {
       //place animations here
+      torus.lookAt(galaxy.camera.position);
+
       requestAnimationFrame(animate);
     };
     animate();
   }, []);
+
+
+
+
 
   return (
     <canvas id="myThreeJsCanvas" />
