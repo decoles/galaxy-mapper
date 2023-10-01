@@ -41,19 +41,19 @@ export default function GenerateGalaxy() {
     const unkownRotationMesh = unkownRotation.getMesh();
     unkownSystem.add(unkownRotationMesh);
 
+    //Get unkown mesh location
+    console.log(unkownMesh.position);
     
-    let raycaster = new THREE.Raycaster();
-    let mouse = new THREE.Vector2();
 
     const interaction = new Interaction(galaxy.renderer, galaxy.scene, galaxy.camera);
-    earthInvisibleRing.cursor = 'pointer';
-    earthInvisibleRing.on('click', () => {
+    unkownSystem.cursor = 'pointer';
+    unkownSystem.on('click', () => {
       console.log('click');
     });
-    earthInvisibleRing.cursor = 'pointer';
-    earthInvisibleRing.on('click', function(ev) {console.log('click');});
-    earthInvisibleRing.on('mouseout', function(ev) {console.log('mouseout');});
-    earthInvisibleRing.on('mouseover', function(ev) {console.log('mouseover'); raycaster.setFromCamera( mouse, galaxy.camera );});
+    unkownSystem.cursor = 'pointer';
+    unkownSystem.on('click', function(ev) {console.log('click'); });
+    unkownSystem.on('mouseout', function(ev) {console.log('mouseout');});
+    unkownSystem.on('mouseover', function(ev) {console.log('mouseover'); });
 
     //make solar system static
     earthSystem.rotation.y += 0;
